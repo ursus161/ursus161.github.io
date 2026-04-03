@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stefan Ghetu</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #00ff41;
+    --green-dim: #00cc33;
+    --green-dark: #00991a;
+    --green-glow: #00ff4140;
+    --bg: #0a0a0a;
+    --bg-card: #111111;
+    --bg-terminal: #0d1117;
+    --border: #1e2a35;
+    --comment: #586e75;
+    --text: #e0e0e0;
+    --text-dim: #888;
+    --cyan: #4ec9b0;
+    --orange: #ce9178;
+    --blue: #569cd6;
+    --yellow: #b5cea8;
+    --purple: #c586c0;
+  }
+
+  html {
+    background: var(--bg);
+    color: var(--text);
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--green-dark) var(--bg);
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 40px 24px;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0, 255, 65, 0.012) 2px, rgba(0, 255, 65, 0.012) 4px
+    );
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .terminal {
+    background: var(--bg-terminal);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    max-width: 680px;
+    width: 100%;
+    box-shadow: 0 0 60px rgba(0, 255, 65, 0.06), 0 8px 32px rgba(0,0,0,0.6);
+    position: relative;
+    z-index: 3;
+  }
+
+  .terminal-header {
+    background: #161b22;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    border-radius: 10px 10px 0 0;
+  }
+
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #febc2e; }
+  .dot.g { background: #28c840; }
+
+  .terminal-title {
+    flex: 1; text-align: center;
+    color: var(--comment); font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .terminal-body {
+    padding: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  .pu { color: var(--green); font-weight: 700; }
+  .pa { color: var(--text-dim); }
+  .ph { color: var(--cyan); }
+  .pp { color: var(--blue); }
+  .pd { color: var(--text-dim); }
+  .cmd { color: var(--yellow); font-weight: 500; }
+  .cmt { color: var(--comment); font-style: italic; }
+  .str { color: var(--orange); }
+  .tp { color: var(--cyan); }
+
+  .ascii-art {
+    color: var(--green);
+    font-size: 10px;
+    line-height: 1.2;
+    text-shadow: 0 0 12px var(--green-glow);
+    margin: 12px 0 20px 0;
+    white-space: pre;
+    letter-spacing: 1px;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 8px; height: 15px;
+    background: var(--green);
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    margin-left: 4px;
+    box-shadow: 0 0 8px var(--green-glow);
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .type-anim {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 1.2s steps(7) 0.5s both;
+  }
+  @keyframes typing { from { width: 0; } to { width: 7ch; } }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--comment);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    animation: float 2s ease-in-out infinite;
+    z-index: 3;
+  }
+  .scroll-hint span { color: var(--green); }
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  .matrix-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 0; opacity: 0.04; overflow: hidden;
+  }
+  .matrix-column {
+    position: absolute; top: -100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; color: var(--green);
+    writing-mode: vertical-rl;
+    animation: mfall linear infinite;
+  }
+  @keyframes mfall { from { transform: translateY(-100%); } to { transform: translateY(200vh); } }
+
+  /* ── CONTENT ── */
+  .content { max-width: 860px; margin: 0 auto; padding: 80px 24px 120px; }
+
+  .section {
+    margin-bottom: 80px;
+    opacity: 0; transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+  .section.visible { opacity: 1; transform: translateY(0); }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--green);
+    text-transform: uppercase; letter-spacing: 3px;
+    margin-bottom: 8px;
+    text-shadow: 0 0 8px var(--green-glow);
+  }
+  .section-title { font-size: 28px; font-weight: 700; margin-bottom: 32px; letter-spacing: -0.5px; }
+  .section-line { width: 40px; height: 2px; background: var(--green); margin-bottom: 32px; box-shadow: 0 0 8px var(--green-glow); }
+
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .projects-grid { grid-template-columns: 1fr; } }
+
+  .project-card {
+    background: var(--bg-card); border: 1px solid #1a1a1a;
+    border-radius: 12px; padding: 24px;
+    transition: all 0.3s ease; position: relative; overflow: hidden;
+  }
+  .project-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%; background: var(--green);
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .project-card:hover { border-color: #222; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .project-card:hover::before { opacity: 1; }
+
+  .project-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px; font-weight: 600; color: var(--green); margin-bottom: 8px;
+  }
+  .project-tech {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--comment); margin-bottom: 12px;
+  }
+  .project-desc { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+  .project-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--green);
+    background: rgba(0,255,65,0.08); border: 1px solid rgba(0,255,65,0.15);
+    padding: 2px 8px; border-radius: 4px; margin-top: 12px;
+  }
+
+  .skills-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  @media (max-width: 640px) { .skills-container { grid-template-columns: 1fr; } }
+
+  .skills-category h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--cyan);
+    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;
+  }
+  .skill-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 0; border-bottom: 1px solid #1a1a1a;
+  }
+  .skill-item-name { font-size: 14px; }
+  .skill-bar-track { width: 100px; height: 4px; background: #1a1a1a; border-radius: 2px; overflow: hidden; }
+  .skill-bar-fill { height: 100%; background: var(--green); border-radius: 2px; box-shadow: 0 0 6px var(--green-glow); }
+
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px;
+    width: 1px; background: #1a1a1a;
+  }
+  .timeline-item { position: relative; margin-bottom: 32px; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -29px; top: 8px;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 8px var(--green-glow);
+  }
+  .timeline-date { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--comment); margin-bottom: 4px; }
+  .timeline-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .timeline-sub { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+
+  .contact-links { display: flex; gap: 16px; flex-wrap: wrap; }
+  .contact-link {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 20px; background: var(--bg-card);
+    border: 1px solid #1a1a1a; border-radius: 8px;
+    color: var(--text); text-decoration: none; font-size: 14px;
+    transition: all 0.3s ease; font-family: 'JetBrains Mono', monospace;
+  }
+  .contact-link:hover { border-color: var(--green); color: var(--green); box-shadow: 0 0 16px rgba(0,255,65,0.1); }
+  .contact-icon { font-size: 12px; color: var(--green); }
+
+  .footer {
+    text-align: center; padding: 40px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--comment);
+    border-top: 1px solid #1a1a1a;
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="matrix-bg" id="matrix"></div>
+  <div class="terminal">
+    <div class="terminal-header">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+      <div class="terminal-title">stefan@portfolio:~</div>
+    </div>
+    <div class="terminal-body">
+  <!-- login banner ca la ssh -->
+  <div style="color: var(--comment); margin-bottom: 12px; font-size: 12px;">
+    Last login: Thu Apr  3 23:30:12 2026 on tty1
+  </div>
+
+  <!-- prima comanda: whoami -->
+  <div>
+    <span class="pu">stefan</span><span class="pa">@</span><span class="ph">portfolio</span>:<span class="pp">~</span><span class="pd">$</span> <span class="cmd">whoami</span>
+  </div>
+  <div style="color: var(--green); margin: 2px 0 16px 0;">stefan</div>
+
+  <!-- a doua comanda: cat about.conf -->
+  <div>
+    <span class="pu">stefan</span><span class="pa">@</span><span class="ph">portfolio</span>:<span class="pp">~</span><span class="pd">$</span> <span class="cmd">cat</span> <span style="color: var(--text-dim);">~/.about</span>
+  </div>
+  <div style="margin: 4px 0 16px 0;">
+    <div><span class="tp">role</span>     <span class="cmt">=</span> <span class="str">"CS Student @ FMI UniBuc"</span></div>
+    <div><span class="tp">location</span> <span class="cmt">=</span> <span class="str">"Bucharest, Romania"</span></div>
+    <div><span class="tp">focus</span>    <span class="cmt">=</span> <span class="str">"Low level programming · Performance · Scripting"</span></div>
+  </div>
+
+  <!-- a treia comanda: uptime -->
+  <div>
+    <span class="pu">stefan</span><span class="pa">@</span><span class="ph">portfolio</span>:<span class="pp">~</span><span class="pd">$</span> <span class="cmd">uptime</span>
+  </div>
+  <div style="color: var(--text-dim); margin: 2px 0 16px 0;">
+    up 1 year, 2 semesters, load average: high
+  </div>
+
+  <!-- prompt activ cu cursor -->
+  <div>
+    <span class="pu">stefan</span><span class="pa">@</span><span class="ph">portfolio</span>:<span class="pp">~</span><span class="pd">$</span> <span class="cursor"></span>
+  </div>
+</div>
+  </div>
+  <div class="scroll-hint"><span>↓</span> scroll</div>
+</section>
+
+<div class="content">
+
+  <section class="section">
+    <div class="section-label">// projects</div>
+    <div class="section-title">What I've built</div>
+    <div class="section-line"></div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-name">RSA Cryptosystem</div>
+        <div class="project-tech">C++ · Performance optimization</div>
+        <div class="project-desc">Full RSA from scratch — BigInt with Karatsuba multiplication, Barrett reduction, modular exponentiation.</div>
+        <div class="project-badge">Intro to Cryptography</div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">RISC-V  Performance Simulator</div>
+        <div class="project-tech">Python · Computer Architecture</div>
+        <div class="project-desc">5-stage pipeline simulator with LRU/LFU cache, data forwarding, and hazard detection — RAW, WAR, load-use stalls.</div>
+        <div class="project-badge">My proudest work so far</div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">PackageMonitor</div>
+        <div class="project-tech">Bash · Cron · Ubuntu</div>
+        <div class="project-desc">Monitors dpkg package installations with automated cron jobs on Ubuntu.</div>
+        <div class="project-badge">Team work!</div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">TaskSched</div>
+        <div class="project-tech">C++ · OOP · RTOS</div>
+        <div class="project-desc">RTOS task scheduler simulator — tick-based execution, WCET-driven scheduling, Gantt chart output.</div>
+        <div class="project-badge">Work in progress</div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">LFA Acceptor</div>
+        <div class="project-tech">Python · Formal Languages</div>
+        <div class="project-desc">DFA, NFA, and λ-NFA acceptors for the Formal Languages and Automata course.</div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">Sorting Benchmark</div>
+        <div class="project-tech">Python · Matplotlib · IPC</div>
+        <div class="project-desc">Comparative analysis and visualization of sorting algorithm performance using concurrency.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">// skills</div>
+    <div class="section-title">What I work with</div>
+    <div class="section-line"></div>
+    <div class="skills-container">
+      <div class="skills-category">
+        <h3>Languages</h3>
+        <div class="skill-item"><span class="skill-item-name">C++</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+        <div class="skill-item"><span class="skill-item-name">Python</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:70%"></div></div></div>
+        <div class="skill-item"><span class="skill-item-name">x86_64 / RISC-V ASM</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:60%"></div></div></div>
+        <div class="skill-item"><span class="skill-item-name">Rust</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:30%"></div></div></div>
+        <div class="skill-item"><span class="skill-item-name">HTML / CSS / JS</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:40%"></div></div></div>
+        <div class="skill-item"><span class="skill-item-name">Bash</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:65%"></div></div></div>
+      </div>
+      <div class="skills-category">
+        <h3>Interests</h3>
+        <div class="skill-item"><span class="skill-item-name">Computer Architecture & OS</span></div>
+        <div class="skill-item"><span class="skill-item-name">Cryptography</span></div>
+        <div class="skill-item"><span class="skill-item-name">Formal Languages</span></div>
+        <div class="skill-item"><span class="skill-item-name">Embedded Systems</span></div>
+        <div class="skill-item"><span class="skill-item-name">Performance optimization</span></div>
+        <div class="skill-item"><span class="skill-item-name">Abstract Algebra</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">// experience</div>
+    <div class="section-title">Where I've been</div>
+    <div class="section-line"></div>
+    <div class="timeline">
+         <div class="timeline-item">
+        <div class="timeline-date">2025 — present</div>
+        <div class="timeline-title">Computer Science @ FMI UniBuc</div>
+        <div class="timeline-sub">Relevant coursework — Computer architecture, object oriented programming, data structures and algorithms, formal languages, databases, calculus, linear and abstract algebra.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2026</div>
+        <div class="timeline-title">Hackademy — Python102</div>
+        <div class="timeline-sub">Advanced Python — Django, RabbitMQ, Docker, Inter Process Communication, Intro to ML .</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2025</div>
+        <div class="timeline-title">IP Workshop — Rust CLI  </div>
+        <div class="timeline-sub">Built a Rust-based BusyBox alongside a team of peers I regularly exchange ideas with.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2023 — 2025</div>
+        <div class="timeline-title">Co-organizer — Braila Tech Sprint</div>
+        <div class="timeline-sub">Co-organized the first two editions of the first hackathon in Brăila, growing it into a regional competition, in partnership with the County Library and County Council.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2023</div>
+        <div class="timeline-title">Project Manager — JSClub</div>
+        <div class="timeline-sub">Helped a large group of High School students fall in love with web development in partnership with the County Library.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">// contact</div>
+    <div class="section-title">Let's connect</div>
+    <div class="section-line"></div>
+    <div class="contact-links">
+      <a href="https://github.com/ursus161" class="contact-link"><span class="contact-icon">▸</span> GitHub</a>
+      <a href="https://www.linkedin.com/in/stefan-ghetu-230004251/" class="contact-link"><span class="contact-icon">▸</span> LinkedIn</a>
+      <a href="mailto:stefanghetu9@gmail.com" class="contact-link"><span class="contact-icon">▸</span> Email</a>
+    </div>
+  </section>
+
+</div>
+
+<div class="footer">built with caffeine and <span style="color:var(--green);">0x4445414442454546</span></div>
+
+<script>
+const matrix = document.getElementById('matrix');
+const chars = 'アイウエオカキクケコ01{}[]();=>';
+for (let i = 0; i < 25; i++) {
+  const col = document.createElement('div');
+  col.className = 'matrix-column';
+  col.style.left = (Math.random() * 100) + '%';
+  col.style.animationDuration = (10 + Math.random() * 15) + 's';
+  col.style.animationDelay = (Math.random() * -20) + 's';
+  col.style.fontSize = (10 + Math.random() * 6) + 'px';
+  let t = '';
+  for (let j = 0; j < 40; j++) t += chars[Math.floor(Math.random() * chars.length)] + '\n';
+  col.textContent = t;
+  matrix.appendChild(col);
+}
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.section').forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
