@@ -4,27 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ursus161 · Stefan Ghetu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --green: #00ff41;
-    --green-dim: #00cc33;
-    --green-dark: #00991a;
-    --green-glow: #00ff4140;
-    --bg: #0a0a0a;
-    --bg-card: #111111;
-    --bg-terminal: #0d1117;
-    --border: #1e2a35;
-    --comment: #586e75;
-    --text: #e0e0e0;
-    --text-dim: #888;
-    --cyan: #4ec9b0;
-    --orange: #ce9178;
-    --blue: #569cd6;
-    --yellow: #b5cea8;
-    --purple: #c586c0;
+    --green:        #00ff41;
+    --green-dim:    #00cc33;
+    --green-dark:   #00991a;
+    --green-glow:   rgba(0, 255, 65, 0.25);
+    --green-subtle: rgba(0, 255, 65, 0.07);
+    --bg:           #0a0a0a;
+    --bg-card:      #0f0f0f;
+    --bg-terminal:  #0d1117;
+    --border:       #1e2a35;
+    --border-sub:   #161b22;
+    --comment:      #586e75;
+    --text:         #e0e0e0;
+    --text-dim:     #888;
+    --text-muted:   #4a4a4a;
+    --cyan:         #4ec9b0;
+    --orange:       #ce9178;
+    --blue:         #569cd6;
+    --yellow:       #b5cea8;
+    --purple:       #c586c0;
   }
 
   html {
@@ -41,6 +46,7 @@
     font-family: 'Outfit', sans-serif;
   }
 
+  /* hero */
   .hero {
     min-height: 100vh;
     display: flex;
@@ -52,35 +58,62 @@
 
   .hero::before {
     content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    position: fixed;
+    inset: 0;
     background: repeating-linear-gradient(
       0deg, transparent, transparent 2px,
-      rgba(0, 255, 65, 0.012) 2px, rgba(0, 255, 65, 0.012) 4px
+      rgba(0,255,65,0.009) 2px, rgba(0,255,65,0.009) 4px
     );
     pointer-events: none;
     z-index: 2;
   }
 
+  .matrix-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.033;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .matrix-column {
+    position: absolute;
+    top: -100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--green);
+    writing-mode: vertical-rl;
+    animation: mfall linear infinite;
+  }
+
+  @keyframes mfall {
+    from { transform: translateY(-100%); }
+    to   { transform: translateY(200vh); }
+  }
+
+  /* terminal */
   .terminal {
     background: var(--bg-terminal);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    max-width: 680px;
+    border-radius: 12px;
+    max-width: 720px;
     width: 100%;
-    box-shadow: 0 0 60px rgba(0, 255, 65, 0.06), 0 8px 32px rgba(0,0,0,0.6);
+    box-shadow:
+      0 0 80px rgba(0,255,65,0.04),
+      0 24px 64px rgba(0,0,0,0.7);
     position: relative;
     z-index: 3;
   }
 
   .terminal-header {
-    background: #161b22;
+    background: var(--border-sub);
     padding: 12px 16px;
     display: flex;
     align-items: center;
     gap: 8px;
     border-bottom: 1px solid var(--border);
-    border-radius: 10px 10px 0 0;
+    border-radius: 12px 12px 0 0;
   }
 
   .dot { width: 12px; height: 12px; border-radius: 50%; }
@@ -89,56 +122,48 @@
   .dot.g { background: #28c840; }
 
   .terminal-title {
-    flex: 1; text-align: center;
-    color: var(--comment); font-size: 12px;
+    flex: 1;
+    text-align: center;
+    color: var(--comment);
+    font-size: 12px;
     font-family: 'JetBrains Mono', monospace;
   }
 
   .terminal-body {
-    padding: 28px;
+    padding: 24px 28px 28px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    line-height: 1.9;
+    font-size: 13.5px;
+    line-height: 1.85;
   }
 
-  .pu { color: var(--green); font-weight: 700; }
-  .pa { color: var(--text-dim); }
-  .ph { color: var(--cyan); }
-  .pp { color: var(--blue); }
-  .pd { color: var(--text-dim); }
+  .pu  { color: var(--green); font-weight: 700; }
+  .pa  { color: var(--text-dim); }
+  .ph  { color: var(--cyan); }
+  .pp  { color: var(--blue); }
+  .pd  { color: var(--text-dim); }
   .cmd { color: var(--yellow); font-weight: 500; }
   .cmt { color: var(--comment); font-style: italic; }
   .str { color: var(--orange); }
-  .tp { color: var(--cyan); }
+  .tp  { color: var(--cyan); }
 
-  .ascii-art {
-    color: var(--green);
-    font-size: 10px;
-    line-height: 1.2;
-    text-shadow: 0 0 12px var(--green-glow);
-    margin: 12px 0 20px 0;
-    white-space: pre;
-    letter-spacing: 1px;
-  }
+  .prompt { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .prompt-sym { color: var(--text-dim); }
+
+  .git-hash { color: var(--yellow); }
+  .git-ref  { color: var(--green); font-weight: 600; }
+  .git-msg  { color: var(--text-dim); }
 
   .cursor {
     display: inline-block;
-    width: 8px; height: 15px;
+    width: 8px; height: 14px;
     background: var(--green);
     animation: blink 1s step-end infinite;
     vertical-align: middle;
-    margin-left: 4px;
-    box-shadow: 0 0 8px var(--green-glow);
+    margin-left: 2px;
+    box-shadow: 0 0 8px rgba(0,255,65,0.6);
   }
-  @keyframes blink { 50% { opacity: 0; } }
 
-  .type-anim {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    animation: typing 1.2s steps(7) 0.5s both;
-  }
-  @keyframes typing { from { width: 0; } to { width: 7ch; } }
+  @keyframes blink { 50% { opacity: 0; } }
 
   .scroll-hint {
     position: absolute;
@@ -148,318 +173,854 @@
     color: var(--comment);
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
-    animation: float 2s ease-in-out infinite;
+    animation: float 2.2s ease-in-out infinite;
     z-index: 3;
+    white-space: nowrap;
   }
   .scroll-hint span { color: var(--green); }
+
   @keyframes float {
     0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(6px); }
+    50%       { transform: translateX(-50%) translateY(7px); }
   }
 
-  .matrix-bg {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 0; opacity: 0.04; overflow: hidden;
+  /* continut */
+  .content {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 100px 24px 120px;
+    position: relative;
+    z-index: 1;
   }
-  .matrix-column {
-    position: absolute; top: -100%;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px; color: var(--green);
-    writing-mode: vertical-rl;
-    animation: mfall linear infinite;
-  }
-  @keyframes mfall { from { transform: translateY(-100%); } to { transform: translateY(200vh); } }
-
-  /* ── CONTENT ── */
-  .content { max-width: 860px; margin: 0 auto; padding: 80px 24px 120px; }
 
   .section {
-    margin-bottom: 80px;
-    opacity: 0; transform: translateY(20px);
-    transition: all 0.6s ease;
+    margin-bottom: 96px;
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
   }
   .section.visible { opacity: 1; transform: translateY(0); }
 
   .section-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; color: var(--green);
-    text-transform: uppercase; letter-spacing: 3px;
-    margin-bottom: 8px;
-    text-shadow: 0 0 8px var(--green-glow);
+    font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+    text-shadow: 0 0 12px rgba(0,255,65,0.35);
   }
-  .section-title { font-size: 28px; font-weight: 700; margin-bottom: 32px; letter-spacing: -0.5px; }
-  .section-line { width: 40px; height: 2px; background: var(--green); margin-bottom: 32px; box-shadow: 0 0 8px var(--green-glow); }
 
-  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 640px) { .projects-grid { grid-template-columns: 1fr; } }
+  .section-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .section-line {
+    width: 36px; height: 2px;
+    background: var(--green);
+    margin-bottom: 36px;
+    box-shadow: 0 0 8px rgba(0,255,65,0.4);
+  }
+
+  /* carduri proiecte */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
 
   .project-card {
-    background: var(--bg-card); border: 1px solid #1a1a1a;
-    border-radius: 12px; padding: 24px;
-    transition: all 0.3s ease; position: relative; overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid #171717;
+    border-radius: 10px;
+    padding: 20px 22px;
+    transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 24px rgba(0,255,65,0.04), 0 4px 16px rgba(0,0,0,0.4);
   }
+
   .project-card::before {
-    content: ''; position: absolute; top: 0; left: 0;
-    width: 3px; height: 100%; background: var(--green);
-    opacity: 0; transition: opacity 0.3s ease;
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--green);
+    opacity: 0;
+    transition: opacity 0.22s;
   }
-  .project-card:hover { border-color: #222; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+
+  .project-card:hover {
+    border-color: #282828;
+    transform: translateY(-3px);
+    box-shadow: 0 0 40px rgba(0,255,65,0.08), 0 12px 36px rgba(0,0,0,0.45);
+  }
   .project-card:hover::before { opacity: 1; }
+
+  .project-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 5px;
+  }
 
   .project-name {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 15px; font-weight: 600; color: var(--green); margin-bottom: 8px;
-  }
-  .project-tech {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; color: var(--comment); margin-bottom: 12px;
-  }
-  .project-desc { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
-  .project-badge {
-    display: inline-block;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; color: var(--green);
-    background: rgba(0,255,65,0.08); border: 1px solid rgba(0,255,65,0.15);
-    padding: 2px 8px; border-radius: 4px; margin-top: 12px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--green);
+    line-height: 1.3;
   }
 
-  .skills-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-  @media (max-width: 640px) { .skills-container { grid-template-columns: 1fr; } }
+  .project-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--comment);
+    text-decoration: none;
+    padding: 3px 9px;
+    border: 1px solid #222;
+    border-radius: 4px;
+    transition: color 0.18s, border-color 0.18s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .project-link:hover {
+    color: var(--green);
+    border-color: rgba(0,255,65,0.28);
+  }
+
+  .project-tech {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--comment);
+    margin-bottom: 9px;
+  }
+
+  .project-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .project-highlights {
+    list-style: none;
+    margin-bottom: 14px;
+    flex: 1;
+  }
+
+  .project-highlights li {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    padding-left: 12px;
+    position: relative;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .project-highlights li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--green-dark);
+  }
+
+  .project-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
+  }
+
+  .project-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    background: var(--green-subtle);
+    border: 1px solid rgba(0,255,65,0.14);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .project-badge.grade {
+    color: var(--yellow);
+    background: rgba(181,206,168,0.07);
+    border-color: rgba(181,206,168,0.18);
+  }
+  .project-badge.wip {
+    color: var(--orange);
+    background: rgba(206,145,120,0.07);
+    border-color: rgba(206,145,120,0.18);
+  }
+
+  /* mentiuni scurte */
+  .also-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--comment);
+    margin: 20px 0 10px;
+  }
+
+  .mini-projects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .mini-project {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    background: var(--bg-card);
+    border: 1px solid #171717;
+    border-radius: 6px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mini-project .dot-sm {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--green-dark);
+    flex-shrink: 0;
+  }
+
+  /* skills */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 36px;
+  }
 
   .skills-category h3 {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px; color: var(--cyan);
-    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;
+    font-size: 11px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #181818;
   }
+
   .skill-item {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 8px 0; border-bottom: 1px solid #1a1a1a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+    padding: 5px 0;
+    border-bottom: 1px solid #131313;
   }
-  .skill-item-name { font-size: 14px; }
-  .skill-bar-track { width: 100px; height: 4px; background: #1a1a1a; border-radius: 2px; overflow: hidden; }
-  .skill-bar-fill { height: 100%; background: var(--green); border-radius: 2px; box-shadow: 0 0 6px var(--green-glow); }
-
-  .timeline { position: relative; padding-left: 32px; }
-  .timeline::before {
-    content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px;
-    width: 1px; background: #1a1a1a;
+  .skill-item::before {
+    content: '';
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--green-dark);
+    flex-shrink: 0;
   }
-  .timeline-item { position: relative; margin-bottom: 32px; }
-  .timeline-item::before {
-    content: ''; position: absolute; left: -29px; top: 8px;
-    width: 9px; height: 9px; border-radius: 50%;
-    background: var(--green); box-shadow: 0 0 8px var(--green-glow);
-  }
-  .timeline-date { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--comment); margin-bottom: 4px; }
-  .timeline-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
-  .timeline-sub { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
-
-  .contact-links { display: flex; gap: 16px; flex-wrap: wrap; }
-  .contact-link {
-    display: flex; align-items: center; gap: 8px;
-    padding: 12px 20px; background: var(--bg-card);
-    border: 1px solid #1a1a1a; border-radius: 8px;
-    color: var(--text); text-decoration: none; font-size: 14px;
-    transition: all 0.3s ease; font-family: 'JetBrains Mono', monospace;
-  }
-  .contact-link:hover { border-color: var(--green); color: var(--green); box-shadow: 0 0 16px rgba(0,255,65,0.1); }
-  .contact-icon { font-size: 12px; color: var(--green); }
-
-  .footer {
-    text-align: center; padding: 40px 24px;
+  .skill-item.learning { color: var(--text-muted); }
+  .skill-item .tag-learn {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px; color: var(--comment);
-    border-top: 1px solid #1a1a1a;
+    font-size: 10px;
+    color: var(--orange);
+    background: rgba(206,145,120,0.07);
+    border: 1px solid rgba(206,145,120,0.15);
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: auto;
+  }
+
+  /* ce urmeaza */
+  .next-card {
+    background: var(--bg-card);
+    border: 1px solid #171717;
+    border-left: 3px solid var(--orange);
+    border-radius: 10px;
+    padding: 24px 26px;
+    box-shadow: 0 0 24px rgba(0,255,65,0.04), 0 4px 16px rgba(0,0,0,0.4);
+  }
+
+  .next-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+  }
+
+  .next-item { margin-bottom: 16px; }
+  .next-item:last-child { margin-bottom: 0; }
+
+  .next-item-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  .next-item-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .next-divider {
+    border: none;
+    border-top: 1px solid #181818;
+    margin: 18px 0;
+  }
+
+  .next-target {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .next-target span { color: var(--comment); }
+
+  /* timeline */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 5px; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--green-dark), #141414);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 32px;
+  }
+  .timeline-item:last-child { margin-bottom: 0; }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -25px; top: 7px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px rgba(0,255,65,0.5);
+  }
+
+  .timeline-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--comment);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .timeline-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  .timeline-sub {
+    font-size: 13.5px;
+    color: var(--text-dim);
+    line-height: 1.65;
+  }
+
+  .timeline-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .timeline-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--comment);
+    background: #111;
+    border: 1px solid #1e1e1e;
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  /* contact */
+  .contact-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    background: var(--bg-card);
+    border: 1px solid #181818;
+    border-radius: 8px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    transition: color 0.22s, border-color 0.22s, box-shadow 0.22s;
+  }
+  .contact-link:hover {
+    color: var(--green);
+    border-color: rgba(0,255,65,0.24);
+    box-shadow: 0 0 20px rgba(0,255,65,0.05);
+  }
+  .contact-icon { color: var(--green); font-size: 11px; }
+
+  /* footer */
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--comment);
+    border-top: 1px solid #131313;
+    background: var(--bg);
+    position: relative;
+    z-index: 3;
+  }
+
+  /* responsive */
+  @media (max-width: 780px) {
+    .projects-grid  { grid-template-columns: 1fr; }
+    .skills-grid    { grid-template-columns: 1fr 1fr; }
+    .content        { padding: 72px 18px 80px; }
+  }
+
+  @media (max-width: 500px) {
+    .skills-grid    { grid-template-columns: 1fr; }
+    .terminal-body  { padding: 18px 20px 22px; font-size: 12px; }
+    .section-title  { font-size: 22px; }
+    .contact-links  { flex-direction: column; }
+    .contact-link   { justify-content: center; }
   }
 </style>
 </head>
 <body>
 
+<div class="matrix-bg" id="matrix"></div>
+
+<!-- hero -->
 <section class="hero">
-  <div class="matrix-bg" id="matrix"></div>
   <div class="terminal">
     <div class="terminal-header">
       <div class="dot r"></div>
       <div class="dot y"></div>
       <div class="dot g"></div>
-      <div class="terminal-title">stefan_ghetu@portfolio:~</div>
+      <div class="terminal-title">stefan_ghetu@portfolio — bash</div>
     </div>
-    <div class="terminal-body">
-  <!-- login banner ca la ssh -->
-  <div style="color: var(--comment); margin-bottom: 12px; font-size: 12px;">
-    Last login: Thu Apr  3 23:30:12 2026 on tty1
+    <div class="terminal-body" id="term-body"></div>
   </div>
 
-  <!-- prima comanda: whoami -->
-  <div>
-    <span class="pu">stefan_ghetu</span><span class="pa">@</span><span class="ph">portfolio</span>:<span class="pp">~</span><span class="pd">$</span> <span class="cmd">whoami</span>
-  </div>
-  <div style="color: var(--green); margin: 2px 0 16px 0;">stefan_ghetu</div>
-
-  <!-- a doua comanda: cat about.conf -->
-  <div>
-    <span class="pu">stefan_ghetu</span><span class="pa">@</span><span class="ph">portfolio</span>:<span class="pp">~</span><span class="pd">$</span> <span class="cmd">cat</span> <span style="color: var(--text-dim);">~/.about</span>
-  </div>
-  <div style="margin: 4px 0 16px 0;">
-    <div><span class="tp">role</span>     <span class="cmt">=</span> <span class="str">"CS Student @ FMI UniBuc"</span></div>
-    <div><span class="tp">location</span> <span class="cmt">=</span> <span class="str">"Bucharest, Romania"</span></div>
-    <div><span class="tp">focus</span>    <span class="cmt">=</span> <span class="str">"Low level programming · Performance · Scripting"</span></div>
-  </div>
-
-  <!-- a treia comanda: uptime -->
-  <div>
-    <span class="pu">stefan_ghetu</span><span class="pa">@</span><span class="ph">portfolio</span>:<span class="pp">~</span><span class="pd">$</span> <span class="cmd">uptime</span>
-  </div>
-  <div style="color: var(--text-dim); margin: 2px 0 16px 0;">
-    up 1 year, 2 semesters, load average: high
-  </div>
-
-  <!-- prompt activ cu cursor -->
-  <div>
-    <span class="pu">stefan_ghetu</span><span class="pa">@</span><span class="ph">portfolio</span>:<span class="pp">~</span><span class="pd">$</span> <span class="cursor"></span>
-  </div>
-</div>
-  </div>
-  <div class="scroll-hint"><span>↓</span> scroll</div>
 </section>
 
+<!-- continut -->
 <div class="content">
 
+  <!-- proiecte -->
   <section class="section">
     <div class="section-label">// projects</div>
     <div class="section-title">What I've built</div>
     <div class="section-line"></div>
     <div class="projects-grid">
+
       <div class="project-card">
-        <div class="project-name"><a href="https://github.com/ursus161/rsa" style="color: inherit; text-decoration: none;">RSA Cryptosystem</a></div>
-        <div class="project-tech">C++ · Performance optimization</div>
-        <div class="project-desc">Full RSA from scratch — BigInt with Karatsuba multiplication, Barrett reduction, modular exponentiation.</div>
-        <div class="project-badge">Intro to Cryptography</div>
+        <div class="project-header">
+          <div class="project-name">TaskSched</div>
+          <a href="https://github.com/ursus161/TaskSched" class="project-link" target="_blank" rel="noopener noreferrer">↗ GitHub</a>
+        </div>
+        <div class="project-tech">C++ · CMake · RTOS concepts · OOP patterns</div>
+        <div class="project-desc">Buliding a multi-core RTOS task scheduler simulator with pluggable algorithms and full observability.</div>
+        <ul class="project-highlights">
+          <li>Schedulers: Priority, Rate Monotonic, EDF, Deadline Monotonic</li>
+          
+          <li>Multi-core: partitioned scheduling, load balancing, cache affinity</li>
+          <li>Strategy pattern</li>
+          <li>Virtual diamond inheritance, tick-based sim, WCET / MIT tracking</li>
+        </ul>
+        <div class="project-badges">
+          <span class="project-badge wip">WIP</span>
+          <span class="project-badge">RTOS · Systems</span>
+        </div>
       </div>
+
       <div class="project-card">
-        <div class="project-name"><a href="https://github.com/ursus161/riscv-performance-analyzer" style="color: inherit; text-decoration: none;">RISC-V  Performance Simulator</a></div>
-        <div class="project-tech">Python · Computer Architecture</div>
-        <div class="project-desc">5-stage pipeline simulator with LRU/LFU cache, data forwarding, and hazard detection — RAW, WAR, load-use stalls.</div>
-        <div class="project-badge">My proudest work so far</div>
+        <div class="project-header">
+          <div class="project-name">RISC-V Performance Analyzer</div>
+          <a href="https://github.com/ursus161/riscv-performance-analyzer" class="project-link" target="_blank" rel="noopener noreferrer">↗ GitHub</a>
+        </div>
+        <div class="project-tech">Python · Computer Architecture · Cache systems · ML</div>
+        <div class="project-desc">Full pipeline simulator and performance analysis suite for RISC-V programs.</div>
+        <ul class="project-highlights">
+          <li>5-stage pipeline: data forwarding, RAW/WAR/WAW hazard detection</li>
+          <li>LRU/LFU cache: valid/dirty bits, set-associative, miss stall modeling</li>
+          <li>Two-pass assembler; performance comparison tools</li>
+          <li>Exploring logistic regression for branch predictor</li>
+        </ul>
+        <div class="project-badges">
+          <span class="project-badge">My proudest work so far</span>
+        </div>
       </div>
+
       <div class="project-card">
-        <div class="project-name"><a href="https://github.com/ursus161/PackageMonitor" style="color: inherit; text-decoration: none;">Package Monitor</a></div>
-        <div class="project-tech">Bash · Cron · Ubuntu</div>
-        <div class="project-desc">Monitors dpkg package installations with automated cron jobs on Ubuntu.</div>
-        <div class="project-badge">Team work!</div>
+        <div class="project-header">
+          <div class="project-name">RSA Cryptosystem</div>
+          <a href="https://github.com/ursus161/rsa" class="project-link" target="_blank" rel="noopener noreferrer">↗ GitHub</a>
+        </div>
+        <div class="project-tech">C++ · Number Theory · Performance optimization</div>
+        <div class="project-desc">RSA from scratch — no crypto libraries. Full BigInt engine with advanced arithmetic.</div>
+        <ul class="project-highlights">
+          <li>BigInt: Karatsuba multiplication, Barrett reduction, modular exp</li>
+          <li>Extended Euclidean Algorithm for modular inverse</li>
+          <li>RSAKey / RSAEngine / Message hierarchy, rule of three</li>
+          <li>Naive vs. Karatsuba benchmarking with analysis</li>
+        </ul>
+        <div class="project-badges">
+          <span class="project-badge">Intro to Cryptography</span>
+        </div>
       </div>
+
       <div class="project-card">
-        <div class="project-name">TaskSched</div>
-        <div class="project-tech">C++ · OOP · RTOS</div>
-        <div class="project-desc">RTOS task scheduler simulator — tick-based execution, WCET-driven scheduling, Gantt chart output.</div>
-        <div class="project-badge">Work in progress</div>
+        <div class="project-header">
+          <div class="project-name">Sorting Benchmark</div>
+          <a href="https://github.com/ursus161/sorting-aglos-benchmark" class="project-link" target="_blank" rel="noopener noreferrer">↗ GitHub</a>
+        </div>
+        <div class="project-tech">Python · Matplotlib · Concurrency · LaTeX</div>
+        <div class="project-desc">Empirical performance analysis of sorting algorithms with parallelism and formal reporting.</div>
+        <ul class="project-highlights">
+          <li>6 algorithms + parallelized Merge Sort</li>
+          <li>Empirical Amdahl's Law: measured speedups vs. theoretical ceiling</li>
+          <li>Full LaTeX report with Matplotlib visualizations</li>
+        </ul>
+        <div class="project-badges">
+          <span class="project-badge">Concurrency · Analysis</span>
+        </div>
       </div>
+
       <div class="project-card">
-        <div class="project-name"><a href="https://github.com/ursus161/tema1-LFA" style="color: inherit; text-decoration: none;">Formal Languages Acceptor</a></div>
-        <div class="project-tech">Python · Formal Languages</div>
-        <div class="project-desc">DFA, NFA, and λ-NFA acceptors for the Formal Languages and Automata course.</div>
+        <div class="project-header">
+          <div class="project-name">Formal Languages Acceptors</div>
+          <a href="https://github.com/ursus161/tema1-LFA" class="project-link" target="_blank" rel="noopener noreferrer">↗ GitHub</a>
+        </div>
+        <div class="project-tech">Python · Theory of Computation</div>
+        <div class="project-desc">Automata implementations covering acceptance, conversion, and minimization.</div>
+        <ul class="project-highlights">
+          <li>DFA, NFA, λ-NFA acceptors</li>
+          <li>λ-NFA → DFA conversion (subset construction) + DFA minimization</li>
+          <li>λ-NFA → regular expression conversion</li>
+        </ul>
+        <div class="project-badges">
+          <span class="project-badge">Formal Languages &amp; Automata</span>
+        </div>
       </div>
+
       <div class="project-card">
-        <div class="project-name"><a href="https://github.com/ursus161/sorting-aglos-benchmark" style="color: inherit; text-decoration: none;" >Sorting Benchmark</a></div>
-        <div class="project-tech">Python · Matplotlib · IPC</div>
-        <div class="project-desc">Comparative analysis and visualization of sorting algorithm performance using concurrency.</div>
+        <div class="project-header">
+          <div class="project-name">PackageMonitor</div>
+          <a href="https://github.com/ursus161/PackageMonitor" class="project-link" target="_blank" rel="noopener noreferrer">↗ GitHub</a>
+        </div>
+        <div class="project-tech">Bash · Python · Cron · Ubuntu</div>
+        <div class="project-desc">System monitoring tool — dpkg log parser with automated cron scheduling and CSV output.</div>
+        <div class="project-badges">
+          <span class="project-badge">System programming</span>
+          <span class="project-badge">Team work!</span>
+        </div>
       </div>
+
+    </div>
+
+    <div class="also-label">// also worked with</div>
+    <div class="mini-projects">
+      <div class="mini-project"><span class="dot-sm"></span>Django REST Framework — CRUD APIs</div>
+      <div class="mini-project"><span class="dot-sm"></span>RabbitMQ — work queues, exchanges, messaging</div>
     </div>
   </section>
 
+  <!-- skills -->
   <section class="section">
     <div class="section-label">// skills</div>
     <div class="section-title">What I work with</div>
     <div class="section-line"></div>
-    <div class="skills-container">
+    <div class="skills-grid">
+
       <div class="skills-category">
         <h3>Languages</h3>
-        <div class="skill-item"><span class="skill-item-name">C++</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:80%"></div></div></div>
-        <div class="skill-item"><span class="skill-item-name">Python</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:80%"></div></div></div>
-        <div class="skill-item"><span class="skill-item-name">x86_64 / RISC-V ASM</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:60%"></div></div></div>
-        <div class="skill-item"><span class="skill-item-name">Rust</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:30%"></div></div></div>
-        <div class="skill-item"><span class="skill-item-name">HTML / CSS / JS</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:50%"></div></div></div>
-        <div class="skill-item"><span class="skill-item-name">Bash</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:65%"></div></div></div>
+        <div class="skill-item">C/C++</div>
+        <div class="skill-item">Python</div>
+        <div class="skill-item">Bash</div>
+        <div class="skill-item">x86-64 ASM</div>
+        <div class="skill-item">RISC-V ASM</div>
+        <div class="skill-item">SQL</div>
+        <div class="skill-item">LaTeX</div>
+        <div class="skill-item learning">Rust <span class="tag-learn">learning</span></div>
       </div>
+
       <div class="skills-category">
-        <h3>Focus</h3>
-        <div class="skill-item"><span class="skill-item-name">Computer Architecture</span></div>
-        <div class="skill-item"><span class="skill-item-name">Performance Optimization</span></div>
-        <div class="skill-item"><span class="skill-item-name">Cryptography</span></div>
-        <div class="skill-item"><span class="skill-item-name">Operating Systems</span></div>
+        <h3>Systems &amp; Architecture</h3>
+        <div class="skill-item">Computer Architecture</div>
+        <div class="skill-item">Operating systems</div>
+        <div class="skill-item">Performance Optimization</div>
+        <div class="skill-item">Cryptography</div>
+        <div class="skill-item">Cache systems</div>
+        <div class="skill-item">Pipeline design</div>
       </div>
+
+      <div class="skills-category">
+        <h3>Tools</h3>
+        <div class="skill-item">Git</div>
+        <div class="skill-item">Docker</div>
+        <div class="skill-item">CMake</div>
+        <div class="skill-item">GDB</div>
+        <div class="skill-item">Linux</div>
+      </div>
+
     </div>
   </section>
 
+
+  <!-- experienta -->
   <section class="section">
     <div class="section-label">// experience</div>
     <div class="section-title">Where I've been</div>
     <div class="section-line"></div>
     <div class="timeline">
-         <div class="timeline-item">
+
+      <div class="timeline-item">
         <div class="timeline-date">2025 — present</div>
-        <div class="timeline-title">BSc in Computer Science @ FMI UniBuc</div>
-        <div class="timeline-sub">Relevant coursework — Computer architecture, Object Oriented Programming, Data Structures and Algorithms, Formal Languages, Databases, Calculus, Linear and Abstract Algebra.</div>
+        <div class="timeline-title">BSc Computer Science @ FMI UniBuc</div>
+        <div class="timeline-sub">Computer Architecture, OOP, Algorithms &amp; Data Structures, Formal Languages, Databases, Calculus, Linear &amp; Abstract Algebra.</div>
       </div>
+
       <div class="timeline-item">
         <div class="timeline-date">2026</div>
         <div class="timeline-title">Hackademy — Python102</div>
-        <div class="timeline-sub">Advanced Python — Django, RabbitMQ, Docker, Inter Process Communication, Intro to ML .</div>
+        <div class="timeline-sub">Advanced Python track: Django REST Framework, RabbitMQ messaging (work queues, exchanges), Docker, IPC, intro to ML.</div>
+        <div class="timeline-tags">
+          <span class="timeline-tag">Django</span>
+          <span class="timeline-tag">RabbitMQ</span>
+          <span class="timeline-tag">Docker</span>
+          <span class="timeline-tag">IPC</span>
+          <span class="timeline-tag">ML</span>
+        </div>
       </div>
+
       <div class="timeline-item">
         <div class="timeline-date">2025</div>
-        <div class="timeline-title">IP Workshop — Rust CLI  </div>
+        <div class="timeline-title">IP Workshop — Rust CLI</div>
         <div class="timeline-sub">Built a Rust-based BusyBox alongside a team of peers I regularly exchange ideas with.</div>
+        <div class="timeline-tags">
+          <span class="timeline-tag">Rust</span>
+          <span class="timeline-tag">CLI</span>
+          <span class="timeline-tag">Systems</span>
+        </div>
       </div>
+
       <div class="timeline-item">
         <div class="timeline-date">2023 — 2025</div>
-        <div class="timeline-title">Co-Founder — Braila Tech Sprint</div>
-        <div class="timeline-sub">Co-organized the first two editions of the first hackathon in Brăila, growing it into a regional competition, in partnership with the County Library and County Council.</div>
+        <div class="timeline-title">Co-Founder — Brăila Tech Sprint</div>
+        <div class="timeline-sub">Co-organized the first two editions of the first hackathon in Brăila, growing it into a regional competition in partnership with the County Library and County Council.</div>
       </div>
+
       <div class="timeline-item">
         <div class="timeline-date">2023</div>
         <div class="timeline-title">Project Manager — JSClub</div>
-        <div class="timeline-sub">Helped a large group of High School students fall in love with web development in partnership with the County Library.</div>
+        <div class="timeline-sub">Led web development workshops for high school students in partnership with the County Library.</div>
       </div>
+
     </div>
   </section>
 
+  <!-- contact -->
   <section class="section">
     <div class="section-label">// contact</div>
     <div class="section-title">Let's connect</div>
     <div class="section-line"></div>
     <div class="contact-links">
-      <a href="https://github.com/ursus161" class="contact-link"><span class="contact-icon">▸</span> GitHub</a>
-      <a href="https://www.linkedin.com/in/stefan-ghetu-230004251/" class="contact-link"><span class="contact-icon">▸</span> LinkedIn</a>
+      <a href="https://github.com/ursus161" class="contact-link" target="_blank" rel="noopener noreferrer"><span class="contact-icon">▸</span> GitHub</a>
+      <a href="https://www.linkedin.com/in/stefan-ghetu-230004251/" class="contact-link" target="_blank" rel="noopener noreferrer"><span class="contact-icon">▸</span> LinkedIn</a>
       <a href="mailto:stefanghetu9@gmail.com" class="contact-link"><span class="contact-icon">▸</span> Email</a>
     </div>
   </section>
 
 </div>
 
-<div class="footer">built with caffeine and <span style="color:var(--green);">0x4445414442454546</span></div>
+<div class="footer">
+  built with caffeine and <span style="color:var(--green);">0x4445414442454546</span>
+</div>
 
 <script>
-const matrix = document.getElementById('matrix');
-const chars = 'アイウエオカキクケコ01{}[]();=>';
-for (let i = 0; i < 25; i++) {
-  const col = document.createElement('div');
-  col.className = 'matrix-column';
-  col.style.left = (Math.random() * 100) + '%';
-  col.style.animationDuration = (10 + Math.random() * 15) + 's';
-  col.style.animationDelay = (Math.random() * -20) + 's';
-  col.style.fontSize = (10 + Math.random() * 6) + 'px';
-  let t = '';
-  for (let j = 0; j < 40; j++) t += chars[Math.floor(Math.random() * chars.length)] + '\n';
-  col.textContent = t;
-  matrix.appendChild(col);
-}
+  const matrix = document.getElementById('matrix');
+  const chars = 'アイウエオカキクケコ01{}[]();=>+-';
+  for (let i = 0; i < 22; i++) {
+    const col = document.createElement('div');
+    col.className = 'matrix-column';
+    col.style.left = (Math.random() * 100) + '%';
+    col.style.animationDuration = (12 + Math.random() * 16) + 's';
+    col.style.animationDelay = (Math.random() * -25) + 's';
+    col.style.fontSize = (11 + Math.random() * 5) + 'px';
+    let t = '';
+    for (let j = 0; j < 40; j++) t += chars[Math.floor(Math.random() * chars.length)] + '\n';
+    col.textContent = t;
+    matrix.appendChild(col);
+  }
 
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.15 });
-document.querySelectorAll('.section').forEach(s => obs.observe(s));
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.section').forEach(s => obs.observe(s));
+
+  // animatie terminal
+  (function() {
+    const body = document.getElementById('term-body');
+
+    const PROMPT = '<span class="pu">stefan_ghetu</span>'
+      + '<span class="pa">@</span>'
+      + '<span class="ph">portfolio</span>'
+      + '<span class="pa">:</span>'
+      + '<span class="pp">~</span>'
+      + '<span class="prompt-sym">$</span>';
+
+    const ABOUT_LINES = [
+      '<span class="tp">name</span>     <span class="cmt">=</span> <span class="str">"Stefan Ghetu"</span>',
+      '<span class="tp">role</span>     <span class="cmt">=</span> <span class="str">"CS Student @ FMI UniBuc"</span>',
+      '<span class="tp">location</span> <span class="cmt">=</span> <span class="str">"Bucharest, Romania"</span>',
+      '<span class="tp">focus</span>    <span class="cmt">=</span> <span class="str">"Systems programming · Low-level · Machine learning"</span>',
+    ];
+
+    const GIT_LINES = [
+      '<span class="git-hash">a4f2c91</span> <span class="git-ref">(HEAD)</span> <span class="git-msg">TaskSched: multi-core ext, load balancing, cache affinity</span>',
+      '<span class="git-hash">9c4d1e8</span> <span class="git-msg">RISC-V Performance Analyzer: two-pass assembler + cache miss stall modeling</span>',
+      '<span class="git-hash">7f3a2b5</span> <span class="git-msg">RSA: BigInt implementation, Karatsuba multiplication + Barrett reduction</span>',
+    ];
+
+    // daca userul prefera fara animatii, arata totul static
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      showStatic(); return;
+    }
+
+    function div(style, html) {
+      const d = document.createElement('div');
+      if (style) d.style.cssText = style;
+      if (html)  d.innerHTML = html;
+      return d;
+    }
+
+    // tasteaza caracter cu caracter
+    function typeInto(span, text, speed, cb) {
+      let i = 0;
+      (function step() {
+        if (i < text.length) {
+          span.textContent += text[i++];
+          setTimeout(step, speed + Math.random() * 20 - 8);
+        } else {
+          cb();
+        }
+      })();
+    }
+
+    // arata liniile pe rand
+    function showLines(container, lines, delay, cb) {
+      let i = 0;
+      (function step() {
+        if (i < lines.length) {
+          container.appendChild(div(null, lines[i++]));
+          setTimeout(step, delay);
+        } else {
+          cb && cb();
+        }
+      })();
+    }
+
+    // construieste un rand de prompt
+    function makePromptRow() {
+      const row = div(null, PROMPT);
+      row.className = 'prompt';
+      const cmdSpan = document.createElement('span');
+      cmdSpan.style.marginLeft = '6px';
+      const cur = document.createElement('span');
+      cur.className = 'cursor';
+      row.appendChild(cmdSpan);
+      row.appendChild(cur);
+      return { row, cmdSpan, cur };
+    }
+
+    // secventa animatiei
+    setTimeout(() => {
+      // banner login
+      body.appendChild(div('color:var(--comment); margin-bottom:14px; font-size:12px;',
+        'Last login: Fri May  2 21:43:08 2026 on pts/0'));
+
+      setTimeout(() => {
+        // comanda 1
+        const p1 = makePromptRow();
+        body.appendChild(p1.row);
+        typeInto(p1.cmdSpan, 'cat ~/.about', 55, () => {
+          p1.cur.remove();
+
+          setTimeout(() => {
+            // output comanda 1
+            const o1 = div('margin:4px 0 16px 0;');
+            body.appendChild(o1);
+            showLines(o1, ABOUT_LINES, 65, () => {
+
+              setTimeout(() => {
+                // comanda 2
+                const p2 = makePromptRow();
+                body.appendChild(p2.row);
+                typeInto(p2.cmdSpan, 'git log --oneline -3', 48, () => {
+                  p2.cur.remove();
+
+                  setTimeout(() => {
+                    // output comanda 2
+                    const o2 = div('margin:4px 0 16px 0; line-height:1.8;');
+                    body.appendChild(o2);
+                    showLines(o2, GIT_LINES, 90, () => {
+
+                      setTimeout(() => {
+                        // prompt final cu cursor
+                        const pf = div(null, PROMPT + ' <span class="cursor"></span>');
+                        pf.className = 'prompt';
+                        body.appendChild(pf);
+                      }, 280);
+                    });
+                  }, 140);
+                });
+              }, 340);
+            });
+          }, 140);
+        });
+      }, 320);
+    }, 480);
+
+    function showStatic() {
+      body.innerHTML =
+        '<div style="color:var(--comment); margin-bottom:14px; font-size:12px;">Last login: Fri May  2 21:43:08 2026 on pts/0</div>'
+        + '<div class="prompt">' + PROMPT + ' <span class="cmd">cat</span> <span style="color:var(--text-dim);">~/.about</span></div>'
+        + '<div style="margin:4px 0 16px 0;">' + ABOUT_LINES.map(l => '<div>' + l + '</div>').join('') + '</div>'
+        + '<div class="prompt">' + PROMPT + ' <span class="cmd">git</span> <span style="color:var(--text-dim);">log --oneline -3</span></div>'
+        + '<div style="margin:4px 0 16px 0; line-height:1.8;">' + GIT_LINES.map(l => '<div>' + l + '</div>').join('') + '</div>'
+        + '<div class="prompt">' + PROMPT + ' <span class="cursor"></span></div>';
+    }
+  })();
 </script>
 </body>
 </html>
