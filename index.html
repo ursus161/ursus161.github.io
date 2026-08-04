@@ -3,8 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ştefan Gheţu portfolio</title>
-<meta name="description" content="Ştefan Gheţu - Computer Science student at the University of Bucharest. Operating systems, kernel drivers, and embedded hardware.">
+<title>Ștefan Ghețu — Systems Engineering</title>
+<meta name="description" content="Ștefan Ghețu — Computer Science student at the University of Bucharest working close to the machine: operating systems, kernel drivers, computer architecture, and embedded hardware.">
+<meta name="author" content="Ștefan Ghețu">
+<meta name="theme-color" content="#0e1214">
+<link rel="canonical" href="https://ursus161.github.io/">
+
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Ștefan Ghețu — Systems Engineering">
+<meta property="og:description" content="Computer Science student at the University of Bucharest. Operating systems, kernel drivers, computer architecture, and embedded hardware.">
+<meta property="og:url" content="https://ursus161.github.io/">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ștefan Ghețu — Systems Engineering">
+<meta name="twitter:description" content="Computer Science student at the University of Bucharest. Operating systems, kernel drivers, computer architecture, and embedded hardware.">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e1214'/%3E%3Cpath d='M2 22 L9 22 L9 10 L17 10 L17 22 L24 22 L24 10 L30 10' fill='none' stroke='%23e8b84b' stroke-width='2.5'/%3E%3C/svg%3E">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -19,7 +34,7 @@
     --probe:   #4aa8b0;
     --trace:   #d4d0c8;
     --trace-2: #9aa0a0;
-    --dim:     #6b7378;
+    --dim:     #7d868b;
     --faint:   #3d474b;
     --line:    #232d31;
     --line-2:  #1a2225;
@@ -39,23 +54,20 @@
   a { color: inherit; }
   .frame { max-width: 980px; margin: 0 auto; padding: 0 clamp(18px, 5vw, 56px); }
 
+  .skip {
+    position: absolute; left: -9999px; top: 0;
+    font-family: var(--mono); font-size: 12px; text-decoration: none;
+    background: var(--amber); color: var(--bg); padding: 10px 16px; z-index: 10;
+  }
+  .skip:focus { left: 0; }
+
   /* ============ HERO ============ */
   .hero { padding: clamp(48px, 9vw, 104px) 0 clamp(30px, 5vw, 56px); }
-  .status {
-    font-family: var(--mono); font-weight: 400; font-size: 12px;
-    letter-spacing: 0.14em; text-transform: uppercase; color: var(--probe);
-    display: flex; align-items: center; gap: 10px; margin-bottom: clamp(24px, 4vw, 40px);
-  }
-  .status .led {
-    width: 7px; height: 7px; border-radius: 50%; background: var(--amber);
-    box-shadow: 0 0 8px var(--amber); animation: blink 2.4s ease-in-out infinite;
-  }
-  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.35;} }
 
   h1 {
     font-family: var(--disp); font-weight: 600;
     font-size: clamp(46px, 10vw, 104px); line-height: 0.94;
-    letter-spacing: -0.02em; color: var(--trace); margin-bottom: 6px;
+    letter-spacing: -0.02em; color: var(--trace); margin-bottom: 10px;
   }
   h1 .diac { color: var(--amber); font-weight: 300; }
   .role {
@@ -101,6 +113,23 @@
   .metastrip b { color: var(--trace); font-weight: 400; }
   .metastrip a { color: var(--probe); text-decoration: none; border-bottom: 1px solid var(--faint); }
   .metastrip a:hover { color: var(--amber); border-color: var(--amber); }
+  .caps {
+    margin-top: 10px; font-family: var(--mono); font-size: 12.5px;
+    color: var(--dim); line-height: 1.7;
+  }
+  .caps b { color: var(--trace-2); font-weight: 400; }
+  .caps .bar { color: var(--faint); padding: 0 8px; }
+
+  .hero-cta { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .cta {
+    font-family: var(--mono); font-size: 13px; letter-spacing: 0.02em; text-decoration: none;
+    border: 1px solid var(--amber); color: var(--amber);
+    background: rgba(232,184,75,0.07); padding: 10px 18px;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: background .15s, color .15s;
+  }
+  .cta:hover { background: var(--amber); color: var(--bg); }
+  .cta-note { font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
 
   /* ============ CHANNEL SECTIONS ============ */
   section { padding: clamp(44px, 6vw, 72px) 0 0; }
@@ -143,13 +172,6 @@
     font-family: var(--disp); font-weight: 600;
     font-size: clamp(20px, 3.4vw, 28px); line-height: 1.05; letter-spacing: -0.015em; color: var(--trace);
   }
-  .badge {
-    font-family: var(--mono); font-weight: 500; font-size: 10px;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 2px 7px; margin-left: 9px; vertical-align: middle;
-    color: var(--bg); background: var(--amber);
-  }
-  .badge.wip { background: transparent; color: var(--dim); border: 1px solid var(--line); }
   .proj-link {
     font-family: var(--mono); font-size: 12px; white-space: nowrap; text-decoration: none;
     color: var(--probe); border-bottom: 1px solid transparent; transition: color .15s, border-color .15s;
@@ -173,28 +195,13 @@
     color: var(--amber); background: rgba(232,184,75,0.08); padding: 0 5px; white-space: nowrap;
   }
 
-  /* ============ STACK ============ */
-  .sgroup { margin-bottom: 22px; }
-  .sgroup:last-child { margin-bottom: 0; }
-  .sgroup-h {
-    font-family: var(--mono); font-size: 11px; font-weight: 500;
-    letter-spacing: 0.1em; text-transform: uppercase; color: var(--probe);
-    margin-bottom: 11px; padding-bottom: 7px; border-bottom: 1px solid var(--line);
-  }
-  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
-  .chip {
-    font-family: var(--mono); font-size: 12.5px; padding: 4px 10px;
-    border: 1px solid var(--line); background: var(--bg-2); color: var(--trace-2);
-    transition: border-color .15s, color .15s;
-  }
-  .chip:hover { border-color: var(--amber-d); color: var(--amber); }
-
   /* ============ LOG (real sequence) ============ */
   .log { position: relative; }
   .log-entry { position: relative; padding: 0 0 clamp(20px, 3vw, 28px) 26px; }
   .log-entry::after {
     content: ''; position: absolute; left: 3px; top: 14px; bottom: -6px; width: 1px; background: var(--line);
   }
+  .log-entry:last-child { padding-bottom: 0; }
   .log-entry:last-child::after { display: none; }
   .log-entry::before {
     content: ''; position: absolute; left: 0; top: 7px; width: 7px; height: 7px;
@@ -235,20 +242,33 @@
 
   @media (prefers-reduced-motion: no-preference) {
     .anim { opacity: 0; transform: translateY(10px); animation: rise .7s cubic-bezier(.2,.7,.3,1) forwards; }
-    .d1{animation-delay:.04s;} .d2{animation-delay:.12s;} .d3{animation-delay:.2s;}
-    .d4{animation-delay:.5s;} .d5{animation-delay:.6s;}
+    .d2{animation-delay:.12s;} .d3{animation-delay:.2s;}
     @keyframes rise { to { opacity:1; transform:none; } }
   }
   a:focus-visible, .clink:focus-visible, .proj-link:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+
+  /* ============ PRINT ============ */
+  @media print {
+    :root {
+      --bg:#fff; --bg-2:#fff; --panel:#fff; --panel-2:#fff;
+      --trace:#000; --trace-2:#222; --dim:#555; --amber:#000; --amber-d:#555;
+      --probe:#333; --line:#bbb; --faint:#bbb;
+    }
+    body { font-size: 11pt; }
+    .scope, .chan-rail, .skip, .hero-cta { display: none; }
+    .chan { grid-template-columns: 1fr; }
+    .proj, .log-entry, section { break-inside: avoid; }
+    .m { background: none; font-weight: 600; }
+    a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #555; }
+  }
 </style>
 </head>
 <body>
+<a class="skip" href="#work">Skip to content</a>
 <div class="frame">
 
   <header class="hero">
-    <h1 class="anim d2">&#350;tefan <span class="diac">Ghețu</span></h1>
-
-    <br class="anim d2">
+    <h1 class="anim d2">Ștefan <span class="diac">Ghețu</span></h1>
     <div class="role anim d2">systems engineering <span class="c">//</span> os &middot; kernel &middot; embedded</div>
 
     <div class="scope anim d3">
@@ -264,29 +284,40 @@
 
     <p class="abstract anim d3">
       Computer Science student at the University of Bucharest. I love working
-      <b>close to the machine</b> - operating systems, performance optimization, and low level programming.
+      <b>close to the machine</b> &mdash; operating systems, performance optimization, and low level programming.
       My current interest is in <span class="hl">energy-aware CPU scheduling</span>.
     </p>
     <div class="metastrip anim d3">
       <span><b>FMI</b> &middot; Univ. of Bucharest</span>
       <span>2025 &ndash; 2028</span>
-      <span><a href="https://github.com/ursus161">github.com/ursus161</a></span>
+      <span><a href="https://github.com/ursus161" target="_blank" rel="noopener noreferrer">github.com/ursus161</a></span>
+    </div>
+    <div class="caps anim d3">
+      <b>C</b> &middot; <b>C++23</b> &middot; Rust &middot; Python &middot; RISC-V / x86-64 asm
+      <span class="bar">|</span>
+      Linux &middot; GDB &middot; CMake &middot; Catch2 &middot; Docker
+    </div>
+
+    <div class="hero-cta anim d3">
+      <a class="cta" href="resume.pdf" download="Stefan-Ghetu-CV.pdf">CV <span aria-hidden="true">&darr;</span></a>
+    
     </div>
   </header>
 
-  <section id="work">
+  <main>
+  <section id="work" aria-labelledby="work-h">
     <div class="chan">
-      <div class="chan-rail"><div class="chan-tag">CH1 &middot; work</div></div>
+      <div class="chan-rail"><div class="chan-tag" aria-hidden="true">CH1 &middot; work</div></div>
       <div>
         <div class="shead">
-          <h2>Selected work <span class="n">[4]</span></h2>
+          <h2 id="work-h">Selected work <span class="n">[04]</span></h2>
           <div class="sub">systems, architecture, embedded</div>
         </div>
 
         <article class="proj">
           <div class="proj-top">
             <div class="proj-name">RISC-V Pipeline Performance Analyzer</div>
-            <a class="proj-link" href="https://github.com/ursus161/riscv-performance-analyzer">GitHub &rarr;</a>
+            <a class="proj-link" href="https://github.com/ursus161/riscv-performance-analyzer" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
           </div>
           <div class="proj-stack">Python &rarr; Rust &middot; FastAPI &middot; React &middot; computer architecture</div>
           <p class="proj-desc">A cycle-accurate simulator and performance suite for RISC-V programs. The work I'm proudest of so far.</p>
@@ -301,7 +332,7 @@
         <article class="proj">
           <div class="proj-top">
             <div class="proj-name">TaskSched</div>
-            <a class="proj-link" href="https://github.com/ursus161/TaskSched">GitHub &rarr;</a>
+            <a class="proj-link" href="https://github.com/ursus161/TaskSched" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
           </div>
           <div class="proj-stack">C++23 &middot; discrete-event sim &middot; real-time systems</div>
           <p class="proj-desc">An RTOS-inspired tick-based scheduler simulator built around a multi-class task hierarchy.</p>
@@ -316,10 +347,10 @@
         <article class="proj">
           <div class="proj-top">
             <div class="proj-name">CortexPeek</div>
-            <a class="proj-link" href="https://github.com/ursus161/cortexpeek">GitHub &rarr;</a>
+            <a class="proj-link" href="https://github.com/ursus161/cortexpeek" target="_blank" rel="noopener noreferrer">GitHub &rarr;</a>
           </div>
           <div class="proj-stack">C++23 &middot; ptrace &middot; libcapstone &middot; Catch2</div>
-          <p class="proj-desc">A ptrace-based userspace debugger for x86-64 ELF binaries the primitives GDB is built on, from scratch.</p>
+          <p class="proj-desc">A ptrace-based userspace debugger for x86-64 ELF binaries &mdash; the primitives GDB is built on, from scratch.</p>
           <ul class="proj-points">
             <li><b>INT3 breakpoints</b> via masked PEEKDATA/POKEDATA read-modify-write, single-stepping, GPR snapshots</li>
             <li>Solved the canonical <b>INT3 resume</b>: on SIGTRAP, rewind RIP, restore the byte, single-step, reinject <span class="m">0xCC</span></li>
@@ -330,82 +361,49 @@
 
         <!-- <article class="proj">
           <div class="proj-top">
-            <div class="proj-name">RSA Cryptosystem</div>
-            <a class="proj-link" href="https://github.com/ursus161">GitHub &rarr;</a>
+            <div class="proj-name">Further projects</div>
+            <a class="proj-link" href="https://github.com/ursus161?tab=repositories" target="_blank" rel="noopener noreferrer">all repos &rarr;</a>
           </div>
-          <div class="proj-stack">C++ &middot; number theory &middot; performance optimization</div>
-          <p class="proj-desc">RSA from scratch, no crypto libraries including a full BigInt engine.</p>
+          <div class="proj-stack">cryptography &middot; formal languages &middot; systems tooling</div>
           <ul class="proj-points">
-            <li>BigInt with <b>Karatsuba multiplication</b>, Barrett reduction, modular exponentiation</li>
-            <li>Extended Euclidean algorithm for the modular inverse</li>
-            <li>Naive vs. Karatsuba <b>benchmarking</b> with written analysis</li>
+            <li><b>RSA Cryptosystem</b> &mdash; a BigInt engine written from scratch (Karatsuba multiplication, modular exponentiation) driving a full RSA implementation, no crypto libraries</li>
+            <li><b>Formal Languages Acceptors</b> &mdash; DFA / NFA / &lambda;-NFA, subset construction, DFA minimization</li>
+            <li><b>PackageMonitor</b> &mdash; dpkg log parser with cron scheduling and CSV output (team project)</li>
           </ul>
         </article> -->
-
-        <article class="proj">
-          <div class="proj-top">
-            <div class="proj-name">On the shelf</div>
-            <a class="proj-link" href="https://github.com/ursus161">all repos &rarr;</a>
-          </div>
-          <div class="proj-stack">smaller course &amp; side projects</div>
-          <ul class="proj-points">
-            <li><b>RSA Cryptosystem</b> BigInt implementation used for cryptography exemplified with an RSA engine</li>
-            <li><b>Formal Languages Acceptors</b> DFA / NFA / &lambda;-NFA, subset construction, DFA minimization</li>
-            <li><b>PackageMonitor</b> dpkg log parser with cron scheduling and CSV output (team project)</li>
-          </ul>
-        </article>
       </div>
     </div>
   </section>
 
-  <section id="stack">
+  <section id="education" aria-labelledby="edu-h">
     <div class="chan">
-      <div class="chan-rail"><div class="chan-tag">CH2 &middot; stack</div></div>
+      <div class="chan-rail"><div class="chan-tag" aria-hidden="true">CH2 &middot; education</div></div>
       <div>
         <div class="shead">
-          <h2>Stack <span class="n">[registers]</span></h2>
-          <div class="sub">what I reach for</div>
-        </div>
-        <div class="sgroup">
-          <div class="sgroup-h">Languages</div>
-          <div class="chips">
-            <span class="chip">C</span><span class="chip">C++23</span><span class="chip">Python</span><span class="chip">Rust</span><span class="chip">x86-64 asm</span><span class="chip">RISC-V asm</span><span class="chip">Bash</span><span class="chip">SQL</span><span class="chip">JavaScript</span>
-          </div>
-        </div>
-        <div class="sgroup">
-          <div class="sgroup-h">Systems &amp; architecture</div>
-          <div class="chips">
-            <span class="chip">Pipelining</span><span class="chip">Hazard detection</span><span class="chip">Cache hierarchies</span><span class="chip">Low-latency</span><span class="chip">Micro-benchmarking</span><span class="chip">Concurrency</span>
-          </div>
-        </div>
-        
-        <div class="sgroup">
-          <div class="sgroup-h">Tooling &amp; spoken</div>
-          <div class="chips">
-            <span class="chip">Linux</span><span class="chip">Git</span><span class="chip">GDB</span><span class="chip">Make</span><span class="chip">CMake</span><span class="chip">Catch2</span><span class="chip">Docker</span><span class="chip">Oracle SQL</span> 
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="education">
-    <div class="chan">
-      <div class="chan-rail"><div class="chan-tag">CH3 &middot; education</div></div>
-      <div>
-        <div class="shead">
-          <h2>Education <span class="n">[degree + schools]</span></h2>
-          <div class="sub">university and summer programs</div>
+          <h2 id="edu-h">Education <span class="n">[BSc]</span></h2>
         </div>
         <div class="log">
           <div class="log-entry">
-            <div class="log-year">2025 2028</div>
-            <div class="log-role">BSc Computer Science FMI, University of Bucharest</div>
+            <div class="log-year">2025 &ndash; 2028</div>
+            <div class="log-role">BSc Computer Science &mdash; FMI, University of Bucharest</div>
             <div class="log-note">Computer architecture, OS, data structures &amp; algorithms, formal languages.</div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="path" aria-labelledby="path-h">
+    <div class="chan">
+      <div class="chan-rail"><div class="chan-tag" aria-hidden="true">CH3 &middot; more</div></div>
+      <div>
+        <div class="shead">
+          <h2 id="path-h">Programs &amp; recognition</h2>
+        </div>
+        <div class="log">
           <div class="log-entry win">
             <div class="log-year">2026</div>
-            <div class="log-role"><span class="w">1st place</span> NXP Linux Kernel Summer School</div>
+            <div class="log-role"><span class="w">1st place</span> &mdash; NXP Linux Kernel Summer School</div>
             <div class="log-note">Kernel driver development (char devices, GPIO/IRQ, SPI/I2C) on the FRDM i.MX 93; won the final hackathon and the board.</div>
           </div>
           <div class="log-entry">
@@ -418,28 +416,9 @@
             <div class="log-role">NXP Cryptographic Algorithms Summer School</div>
             <div class="log-note">Crypto algorithms in C on the LPC55S69 (Cortex-M33).</div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="path">
-    <div class="chan">
-      <div class="chan-rail"><div class="chan-tag">CH4 &middot; more</div></div>
-      <div>
-        <div class="shead">
-          <h2>Also <span class="n">[selected]</span></h2>
-          <div class="sub">competitions and community</div>
-        </div>
-        <div class="log">
-          <div class="log-entry win">
-            <div class="log-year">2026</div>
-            <div class="log-role"><span class="w">3rd place</span> ACS &times; Keysight CTF</div>
-            <div class="log-note">Crypto, reverse engineering, binary exploitation, forensics, and web.</div>
-          </div>
           <div class="log-entry">
-            <div class="log-year">2023 2025</div>
-            <div class="log-role">Co-founder Br&#259;ila Tech Sprint</div>
+            <div class="log-year">2023 &ndash; 2025</div>
+            <div class="log-role">Co-founder &mdash; Br&#259;ila Tech Sprint</div>
             <div class="log-note">Co-organized the first two editions of Br&#259;ila's first hackathon.</div>
           </div>
         </div>
@@ -447,30 +426,61 @@
     </div>
   </section>
 
-  <section id="contact">
+  <section id="contact" aria-labelledby="contact-h">
     <div class="chan">
-      <div class="chan-rail"><div class="chan-tag">CH5 &middot; out</div></div>
+      <div class="chan-rail"><div class="chan-tag" aria-hidden="true">CH4 &middot; out</div></div>
       <div>
-        <div class="contact-h">Let's <span class="c">talk.</span></div>
+        <h2 class="contact-h" id="contact-h">Let's <span class="c">talk.</span></h2>
         <p class="contact-sub">Reach me by email or on GitHub.</p>
         <div class="clinks">
           <a class="clink" href="mailto:stefanghetu9@gmail.com">email <span class="a">&#8599;</span></a>
-          <a class="clink" href="https://github.com/ursus161">github <span class="a">/ursus161</span></a>
-          <a class="clink" href="#">linkedin <span class="a">&#8599;</span></a>
+          <a class="clink" href="https://github.com/ursus161" target="_blank" rel="noopener noreferrer">github <span class="a">/ursus161</span></a>
+          <a class="clink" href="resume.pdf" download="Stefan-Ghetu-CV.pdf">cv <span class="a">&darr; pdf</span></a>
+          <!-- LinkedIn: paste your profile URL below and uncomment.
+          <a class="clink" href="https://www.linkedin.com/in/YOUR-HANDLE" target="_blank" rel="noopener noreferrer">linkedin <span class="a">&#8599;</span></a>
+          -->
         </div>
       </div>
     </div>
   </section>
+  </main>
 
   <footer>
-    <span>&#350;TEFAN GHE&#354;U</span>
-    <span>BUCHAREST, RO</span>
+    <span>&copy; <span id="yr">2026</span> Ștefan Ghețu</span>
+   
   </footer>
 
 </div>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Ștefan Ghețu",
+  "url": "https://ursus161.github.io/",
+  "jobTitle": "Computer Science student",
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "University of Bucharest, Faculty of Mathematics and Computer Science"
+  },
+  "knowsAbout": [
+    "Operating systems",
+    "Linux kernel drivers",
+    "Computer architecture",
+    "Real-time scheduling",
+    "Embedded systems",
+    "C++",
+    "Rust"
+  ],
+  "sameAs": ["https://github.com/ursus161"]
+}
+</script>
+
 <script>
-  if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  if ('IntersectionObserver' in window &&
+      window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
         if (e.isIntersecting) {
@@ -479,7 +489,7 @@
         }
       });
     }, { threshold: 0.1 });
-    document.querySelectorAll('.proj, .sgroup, .log-entry, .contact-h, .contact-sub, .clinks').forEach(function(el){
+    document.querySelectorAll('.proj, .log-entry, .contact-h, .contact-sub, .clinks').forEach(function(el){
       el.style.opacity='0'; el.style.transform='translateY(10px)';
       io.observe(el);
     });
